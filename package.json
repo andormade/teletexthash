@@ -1,6 +1,6 @@
 {
   "name": "teletexthash",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "edit-tf compatible teletext has encoder and decoder library",
   "main": "src/index.js",
   "scripts": {
