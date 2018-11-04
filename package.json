@@ -1,0 +1,27 @@
+{
+  "name": "teletexthash",
+  "version": "0.0.1",
+  "description": "edit-tf compatible teletext has encoder and decoder library",
+  "main": "src/index.js",
+  "scripts": {
+    "prepublish": "npm run test",
+    "test": "nyc mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andormade/teletexthash.git"
+  },
+  "keywords": [
+    "teletext"
+  ],
+  "author": "Andor Polgar",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/andormade/teletexthash/issues"
+  },
+  "homepage": "https://github.com/andormade/teletexthash#readme",
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0"
+  }
+}
