@@ -1,4 +1,10 @@
-const { setBit, getBit, forEachBit, getBase64Char } = require('./utils');
+const {
+	setBit,
+	getBit,
+	forEachBit,
+	getBase64Char,
+	getBase64Code,
+} = require('./utils');
 
 const ROWS = 25;
 const COLS = 40;
@@ -34,6 +40,47 @@ const encode = function(teletextBuffer, params = {}, characterSet = 0) {
 	return hash;
 };
 
+const decode = function(hash) {
+	const [characterSet, b64string] = hash.split(':');
+	const b64 = b64string.split('').map(getBase64Code);
+	const teletextBuffer = new Uint8Array(ROWS * COLS);
+
+	let currentcode = 0x00;
+
+	forEachBit(
+		b64,
+		function(word, wordPointer, bitPointer) {
+			const teletextBitPointer =
+				(BASE_64_WORD_LENGTH * wordPointer + bitPointer) % 7;
+
+			if (getBit(word, bitPointer, BASE_64_WORD_LENGTH)) {
+				currentcode = setBit(
+					currentcode,
+					teletextBitPointer,
+					TELETEXT_WORD_LENGTH
+				);
+			}
+
+			if (teletextBitPointer === TELETEXT_WORD_LENGTH - 1) {
+				const charPointer =
+					(BASE_64_WORD_LENGTH * wordPointer +
+						bitPointer -
+						teletextBitPointer) /
+					7;
+				teletextBuffer[charPointer] = currentcode;
+				currentcode = 0x00;
+			}
+		},
+		TELETEXT_WORD_LENGTH
+	);
+
+	return {
+		characterSet,
+		teletextBuffer,
+	};
+};
+
 module.exports = {
 	encode,
+	decode,
 };
